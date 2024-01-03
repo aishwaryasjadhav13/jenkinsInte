@@ -3,7 +3,7 @@ node {
     def SF_CONSUMER_KEY='3MVG9ooRt4uZ_3TkUx1H16ZSPk2vy29Sf24qkhjM5C6kPHSwJo3q8TUW9KEdz8_vR1WtXKJEb.XhJ0QnoDLi1'
     def SF_USERNAME='patchipulusu.sreeja@savvas.com.icom.icomdev'
     def SERVER_KEY_CREDENTALS_ID='fd91dc01-1feb-41cd-b45a-cfbd671ef343'
-    def SF_INSTANCE_URL = "https://login.salesforce.com"
+    def SF_INSTANCE_URL = "https://test.salesforce.com"
     // Stage to authenticate with Salesforce org
     stage('Authorize DevHub') {
         rc = command "sf org login jwt --instance-url ${SF_INSTANCE_URL} --client-id ${SF_CONSUMER_KEY} --username ${SF_USERNAME} --jwt-key-file ${server_key_file} --set-default-dev-hub --alias HubOrg"
