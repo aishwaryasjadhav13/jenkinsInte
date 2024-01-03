@@ -1,33 +1,18 @@
-pipeline {
-    agent any
- 
-    environment {
-        def SF_CONSUMER_KEY=env.SF_CONSUMER_KEY
-        def SF_USERNAME=env.SF_USERNAME
-        def SERVER_KEY_CREDENTALS_ID=env.SERVER_KEY_CREDENTALS_ID
-    }
- 
-    stages {
-        stage('Build') {
-            steps {
-                echo 'Building...'
-                // Standard build steps
-                sh "sf org login jwt --instance-url ${SF_INSTANCE_URL} --client-id ${SF_CONSUMER_KEY} --username ${SF_USERNAME} --jwt-key-file ${server_key_file} --set-default-dev-hub --alias HubOrg"
-            }
-        }
- 
-        stage('Test') {
-            steps {
-                echo 'Testing...'
-                // Standard testing steps
-            }
-        }
- 
-        stage('Deploy') {
-            steps {
-                echo 'Deploying...'
-                // Standard deployment steps
-            }
+node {
+    // Define your Salesforce credentials
+    def SF_CONSUMER_KEY=env.SF_CONSUMER_KEY
+    def SF_USERNAME=env.SF_USERNAME
+    def SERVER_KEY_CREDENTALS_ID=env.SERVER_KEY_CREDENTALS_ID
+
+    // Stage to authenticate with Salesforce org
+    stage('Authorize DevHub') {
+        rc = command "${toolbelt}/sf org login jwt --instance-url ${SF_INSTANCE_URL} --client-id ${SF_CONSUMER_KEY} --username ${SF_USERNAME} --jwt-key-file ${server_key_file} --set-default-dev-hub --alias HubOrg"
+        if (rc != 0) {
+            error 'Salesforce dev hub org authorization failed.'
         }
     }
+ 
+    // Additional stages for your deployment or testing steps can be added here
+    // For example, deploy to Salesforce using "sfdx force:source:deploy" command
+    // Add more stages as needed for your specific pipeline steps
 }
